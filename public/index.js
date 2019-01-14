@@ -146,16 +146,29 @@ const actors = [{
   }]
 }];
 
-//Step 1
 
-function PricingBar(events,bars) {
-    events.forEach(event=>{
+//Step 2
+
+function PricingBar(bars, events) {
+    let reduction = 1;
+    reduction = 1;
+    events.forEach(event => {
         bars.forEach(bar => {
-            if (event.barId == bar.id) {
-                event.price = event.time*bar.pricePerHour + event.persons*bar.pricePerPerson;
+            if (event.barId === bar.id) {
+                event.price = event.time * bar.pricePerHour + event.persons * bar.pricePerPerson;
+                if (event.persons >= 10) {
+                    reduction = 0.1;
+                }
+                if (event.persons >= 20) {
+                    reduction = 0.3;
+                }
+                if (event.persons >= 60) {
+                    reduction = 0.5;
+                }
+                event.price = event.time * bar.pricePerHour + event.persons * (bar.pricePerPerson * reduction);
             }
         });
-    });
+    })
 }
 
 PricingBar(events,bars);
