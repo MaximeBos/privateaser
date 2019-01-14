@@ -157,10 +157,10 @@ function PricingBar(bars, events) {
         bars.forEach(bar => {
             if (event.barId === bar.id) {
                 event.price = event.time * bar.pricePerHour + event.persons * bar.pricePerPerson;
-                if (event.persons >= 10) {
+                if (event.persons >= 10 && event.persons < 20) {
                     reduction = 0.1;
                 }
-                if (event.persons >= 20) {
+                if (event.persons >= 20 && event.persons < 60) {
                     reduction = 0.3;
                 }
                 if (event.persons >= 60) {
@@ -172,7 +172,20 @@ function PricingBar(bars, events) {
     })
 }
 
+
+function Commission(events){
+    events.forEach(event =>{
+        let commission = 0.3*event.price;
+        event.commission.insurance = commission/2;
+        commission /= 2;
+        event.commission.treasury = event.persons;
+        commission -= event.persons;
+        event.commission.privateaser = commission;
+    })
+}
+
 PricingBar(events,bars);
+Commission(events);
 
 console.log(bars);
 console.log(events);
