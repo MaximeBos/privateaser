@@ -192,6 +192,42 @@ function fdeductible(events){
     })
 }
 
+function payActors(actors, events){
+    actors.forEach(actor =>{
+        actor.payment.forEach(payment =>{
+            events.forEach(event =>{
+                if(event.id === actor.eventId) {
+                    if(payment.who === 'booker'){
+                        if(event.options.deductibleReduction){
+                            payment.amount += event.persons;
+                        }
+                        payment.amount += event.price;
+                    }
+
+                    if(payment.who === 'bar'){
+                        payment.amount += (event.price - (event.commission.privateaser + event.commission.treasury + event.commission.insurance));
+                    }
+
+                    if(payment.who === 'insurance'){
+                        payment.amount += event.commission.insurance;
+                    }
+
+                    if(payment.who === 'treasury'){
+                        payment.amount += event.commission.treasury;
+                    }
+
+                    if(payment.who === 'privateaser'){
+                        if(event.options.deductibleReduction){
+                            payment.amount += event.persons;
+                        }
+                        payment.amount += event.commission.privateaser;
+                    }
+                }
+            })
+        })
+    })
+}
+
 
 PricingBar(events,bars);
 Commission(events);
