@@ -147,6 +147,7 @@ const actors = [{
 }];
 
 
+
 //Step 2
 
 function PricingBar(bars, events) {
